@@ -31,8 +31,8 @@ font = pygame.font.SysFont(None, 30)
 
 north_btn = Button(100, 400, 100, 50, "North")
 south_btn = Button(100, 500, 100, 50, "South")
-west_btn = Button(210, 450, 100, 50, "West")
-east_btn = Button(-10 + 100, 450, 100, 50, "East")
+west_btn = Button(-10 + 100, 450, 100, 50, "West")
+east_btn = Button(210, 450, 100, 50, "East")
 
 def move(direction):
     global current_room
