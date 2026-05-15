@@ -33,6 +33,8 @@ north_btn = Button(100, 400, 100, 50, "North")
 south_btn = Button(100, 500, 100, 50, "South")
 west_btn = Button(-10 + 100, 450, 100, 50, "West")
 east_btn = Button(210, 450, 100, 50, "East")
+observe_btn = Button(700, 500, 100, 50, "Observe")
+bag_btn = Button(850, 500, 50, 50, "B" )
 
 def move(direction):
     global current_room
@@ -41,8 +43,14 @@ def move(direction):
         current_room = current_room.exits[direction]
         print("Moved to:", current_room.name)
 
+
     else:
         print("Not a valid dirction.")
+
+def observe(current_room): 
+    room_desc = font.render(current_room.description, True, (255, 255, 255))
+    screen.blit(room_desc, (400, 100))
+
 
 #text handling
 # display_surface = pygame.display.set_mode((X, Y))
@@ -56,13 +64,15 @@ current_room = Rooms.Entrance #init room traversal
 while running:
 
     screen.blit(background, (0, 0)) #display background
+    clock.tick(60)
 
     #room traversal
     for event in pygame.event.get():
 
         if event.type == pygame.QUIT:
             running = False
-
+        
+        #Movement
         if event.type == pygame.MOUSEBUTTONDOWN: #means event triggers when the key is pressed
             mouse_pos = pygame.mouse.get_pos()
 
@@ -82,10 +92,16 @@ while running:
                 move("East")
                 # print("Player moved East")
 
+            if observe_btn.is_clicked(mouse_pos):
+                observe(current_room)
+
+        #Button rendering
         north_btn.draw(screen, font)
         south_btn.draw(screen, font)
         west_btn.draw(screen, font)
         east_btn.draw(screen, font)
+        observe_btn.draw(screen, font)
+        bag_btn.draw(screen, font)
 
         pygame.display.update()
 
