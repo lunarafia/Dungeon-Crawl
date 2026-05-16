@@ -2,6 +2,16 @@ import pygame
 import random
 from collections import defaultdict
 
+#Dice rolls
+def rolld4():
+    random.randint(1, 4)
+
+def rolld6():
+    random.randint(1, 6)
+
+def rolld8():
+    random.randint(1, 8)
+
 class Enemy:
     def __init__(self, name, health, armor, strength, dexterity):
         self.name = name
@@ -25,7 +35,7 @@ Dagger = Weapon("Dagger", 4)
 Hammer = Weapon("Hammer", 4)
 Spear = Weapon("Spear", 6)
 ShortSword = Weapon("Shortsword", 6)
-Longsword = Weapon("Longsword", 8) #1d8
+LongSword = Weapon("Longsword", 8) #1d8
 MorningStar = Weapon("Morning Star", 8)
 
 class Item:
@@ -50,34 +60,42 @@ class Player:
         self.meleeUp = meleeUp
 
     #Total damage = Weapon damage dice + Ability modifier + bonus modifier
-    def meleeAttack(self, target):
-        if self.strength > 0:
-            meleeDamage = random.randint(1, 10) + self.strength
-        else:
-            print(f"{self.name} has no strength points.")
+    # def meleeAttack(self, target):
+    #     if self.strength > 0:
+    #         if Weapon.dice == 4:
+    #             meleeDamage = rolld4 + (self.strength/2)
+    #         elif Weapon.dice == 6:
+    #             meleeDamage = rolld6 + (self.strength/2)
+    #         elif Weapon.dice == 8:
+    #             meleeDamage = rolld8 + (self.strength/2)
+             
+    #     else:
+    #         print(f"{self.name} has no strength points.")
 
 #Lists
-WeaponList = []
-for i in range(20):
-    WeaponList.append(WeaponList(i))
+WeaponList = [Dagger, Hammer, Spear, ShortSword, LongSword, MorningStar]
+
 
 #Dictionaries
 #iterate through weapon list, find all weapons where dice = 4 and add them to dictionary
-d4Weapon = {}
-for i in Weapon:
-    if Weapon.dice == 4:
-        d4Weapon.update(i)
+# d4Weapon = {}
+# for i in Weapon:
+#     if Weapon.dice == 4:
+#         d4Weapon.update(i)
 
-d6Weapon = {}
-for i in Weapon:
-    if Weapon.dice == 6:
-        d6Weapon.update(i)
+# d6Weapon = {}
+# for i in Weapon:
+#     if Weapon.dice == 6:
+#         d6Weapon.update(i)
 
-d8Weapon = {}
-for i in Weapon:
-    if Weapon.dice == 8:
-        d8Weapon.update(i)
+# d8Weapon = {}
+# for i in Weapon:
+#     if Weapon.dice == 8:
+#         d8Weapon.update(i)
 
-EnemyList = []
-for i in range(20):
-    EnemyList.append(WeaponList(i))
+# EnemyList = []
+# for i in range(20):
+#     EnemyList.append(WeaponList(i))
+
+# print(f"EnemyList: {EnemyList}")
+# print(f"WeaponList: {WeaponList}")

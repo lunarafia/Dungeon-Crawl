@@ -2,6 +2,7 @@ import pygame
 import random
 import Entity
 import Rooms
+from Map import TileKind, Map
 
 #dice roll
 def roll_d20():
@@ -12,6 +13,14 @@ screen = pygame.display.set_mode((1280, 720)) #set resolution
 background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill((19, 15, 46)) #background colour
+
+tileKinds = [
+    TileKind("wall", "Assets/Tiles/wall_placeholder.png", True),
+    TileKind("floor", "Assets/Tiles/floor_placeholder.png", False)
+]
+
+# map = Map("Assets/Maps/Entrance.map", tileKinds, 16)
+map = Map("Assets/Maps/Test.map", tileKinds, 16)
 
 #Button class
 class Button:
@@ -29,10 +38,10 @@ class Button:
     
 font = pygame.font.SysFont(None, 30)
 
-north_btn = Button(100, 400, 100, 50, "North")
-south_btn = Button(100, 500, 100, 50, "South")
-west_btn = Button(-10 + 100, 450, 100, 50, "West")
-east_btn = Button(210, 450, 100, 50, "East")
+north_btn = Button(100, 520, 100, 50, "North")
+south_btn = Button(100, 620, 100, 50, "South")
+west_btn = Button(5, 570, 100, 50, "West")
+east_btn = Button(195, 570, 100, 50, "East")
 observe_btn = Button(700, 500, 100, 50, "Observe")
 bag_btn = Button(850, 500, 50, 50, "B" )
 
@@ -49,7 +58,7 @@ def move(direction):
 
 def observe(current_room): 
     room_desc = font.render(current_room.description, True, (255, 255, 255))
-    screen.blit(room_desc, (400, 100))
+    screen.blit(room_desc, (450, 450))
 
 
 #text handling
@@ -65,6 +74,8 @@ while running:
 
     screen.blit(background, (0, 0)) #display background
     clock.tick(60)
+
+    map.draw(screen)
 
     #room traversal
     for event in pygame.event.get():
@@ -94,6 +105,10 @@ while running:
 
             if observe_btn.is_clicked(mouse_pos):
                 observe(current_room)
+        
+        #UI Rendering
+        #Bottom panel
+        pygame.draw.rect(screen, (180, 180, 180), (0, 480, 1280, 240))
 
         #Button rendering
         north_btn.draw(screen, font)
@@ -102,6 +117,8 @@ while running:
         east_btn.draw(screen, font)
         observe_btn.draw(screen, font)
         bag_btn.draw(screen, font)
+
+
 
         pygame.display.update()
 
