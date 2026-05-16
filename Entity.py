@@ -1,24 +1,32 @@
 import pygame
-import main
+import random
+from collections import defaultdict
 
 class Enemy:
-    def __init__(self, name, health, damage, speed):
+    def __init__(self, name, health, armor, strength, dexterity):
         self.name = name
         self.health = health
-        self.damage = damage
-        self.speed = speed
+        self.armor = armor
+        self.strength = strength
+        self.dexterity = dexterity
+        # self.weapon = weapon
 
+Goblin = Enemy("Goblin", 15, 10, 8, 12)
+Skeleton = Enemy("Skeleton", 13, 13, 10, 11) 
+Slime = Enemy("Slime", 10, 8, 10, 15 ) #Slimes should be easy to hit but fast
+
+#Want to add weapon attribute to enemy class, should allow null values. Will allow enemies to select a random weapon from a specified dictionary before battle
 class Weapon:
-    def __init__(self, name, damage):
+    def __init__(self, name, dice):
         self.name = name
-        self.damage = damage
+        self.dice = dice
 
-class Player:
-    def __init__(self, name, health, damage, speed):
-        self.name = name
-        self.health = health
-        self.damage = damage
-        self.speed = speed
+Dagger = Weapon("Dagger", 4)
+Hammer = Weapon("Hammer", 4)
+Spear = Weapon("Spear", 6)
+ShortSword = Weapon("Shortsword", 6)
+Longsword = Weapon("Longsword", 8) #1d8
+MorningStar = Weapon("Morning Star", 8)
 
 class Item:
     def __init__(self, name):
@@ -27,10 +35,49 @@ class Item:
 class Potion(Item):
     pass
 
-Goblin = Enemy("Goblin", 15, 5, 3)
-Slime = Enemy("Slime", 7, 5, 6)
-Skeleton = Enemy("Skeleton", 13, 6, 4) 
 
-Sword = Weapon("Sword", 6)
-Axe = Weapon("Axe", 5)
-Staff = Weapon("Staff", 5)
+
+class Player:
+    def __init__(self, name, health, maxHealth, armor, strength, dexterity, weapon, meleeLow, meleeUp):
+        self.name = name
+        self.health = health
+        self.maxHealth = maxHealth #so potions know how much char max health is
+        self.armor = armor #determines if player is hit by attack
+        self.strength = strength #melee damage modifier
+        self.dexterity = dexterity #determines attack order
+        self.weapon = weapon #melee damage mod, determines dice roll
+        self.meleeLow = meleeLow 
+        self.meleeUp = meleeUp
+
+    #Total damage = Weapon damage dice + Ability modifier + bonus modifier
+    def meleeAttack(self, target):
+        if self.strength > 0:
+            meleeDamage = random.randint(1, 10) + self.strength
+        else:
+            print(f"{self.name} has no strength points.")
+
+#Lists
+WeaponList = []
+for i in range(20):
+    WeaponList.append(WeaponList(i))
+
+#Dictionaries
+#iterate through weapon list, find all weapons where dice = 4 and add them to dictionary
+d4Weapon = {}
+for i in Weapon:
+    if Weapon.dice == 4:
+        d4Weapon.update(i)
+
+d6Weapon = {}
+for i in Weapon:
+    if Weapon.dice == 6:
+        d6Weapon.update(i)
+
+d8Weapon = {}
+for i in Weapon:
+    if Weapon.dice == 8:
+        d8Weapon.update(i)
+
+EnemyList = []
+for i in range(20):
+    EnemyList.append(WeaponList(i))
