@@ -15,12 +15,23 @@ background = background.convert()
 background.fill((19, 15, 46)) #background colour
 
 tileKinds = [
-    TileKind("wall", "Assets/Tiles/wall_placeholder.png", True),
-    TileKind("floor", "Assets/Tiles/floor_placeholder.png", False)
+    TileKind("floor", "Assets/Tiles/tile010.png", False),
+    TileKind("wall", "Assets/Tiles/tile016.png", True),
 ]
 
 # map = Map("Assets/Maps/Entrance.map", tileKinds, 16)
-map = Map("Assets/Maps/Test.map", tileKinds, 16)
+map = Map("Assets/Maps/Entrance.map", tileKinds, 16)
+
+#Ensures that map is rendered at the centre of game window
+
+game_width = 1280
+game_height = 720
+
+map_width = len(map.tiles[0]) * map.tileSize
+map_height = len(map.tiles) * map.tileSize
+
+offset_x = (game_width - map_width) // 2
+offset_y = (game_height - map_height) // 2
 
 #Button class
 class Button:
@@ -75,7 +86,7 @@ while running:
     screen.blit(background, (0, 0)) #display background
     clock.tick(60)
 
-    map.draw(screen)
+    map.draw(screen, offset_x, offset_y)
 
     #room traversal
     for event in pygame.event.get():

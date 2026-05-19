@@ -28,10 +28,22 @@ class Map:
         #Set size
         self.tileSize = tileSize
 
-    def draw(self, screen):
-        for y, row in enumerate(self.tiles): 
+    def draw(self, screen, offset_x, offset_y):
+        for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
-                location = (x * self.tileSize, y * self.tileSize)
+                    
+                location = (
+                    x * self.tileSize + offset_x,
+                    y * self.tileSize + offset_y
+                )
+
                 image = self.tileKinds[tile].image
                 screen.blit(image, location)
+
+    # def draw(self, screen):
+    #     for y, row in enumerate(self.tiles): 
+    #         for x, tile in enumerate(row):
+    #             location = (x * self.tileSize, y * self.tileSize)
+    #             image = self.tileKinds[tile].image
+    #             screen.blit(image, location)
 
