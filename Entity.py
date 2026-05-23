@@ -1,7 +1,7 @@
 import pygame
 import random
 import Item
-from Item import Weapon, d4Weapon, d6Weapon, d8Weapon
+# from Item import Weapon, d4Weapon, d6Weapon, d8Weapon
 from collections import defaultdict
 
 #Dice rolls
@@ -74,7 +74,7 @@ class Player:
     #     else:
     #         print(f"{self.name} has no strength points.")
 
-PlayerChar = ("P1", 40, 40, None, 5, 7, Weapon.Sword, 1, 10)
+# PlayerChar = ("P1", 40, 40, None, 5, 7, Weapon.Sword, 1, 10)
 
 #Dictionaries
 #iterate through weapon list, find all weapons where dice = 4 and add them to dictionary

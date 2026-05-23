@@ -31,7 +31,44 @@ map_width = len(map.tiles[0]) * map.tileSize
 map_height = len(map.tiles) * map.tileSize
 
 offset_x = (game_width - map_width) // 2
-offset_y = (game_height - map_height) // 2
+offset_y = 32
+
+class Player:
+    def __init__(self, x, y):
+        self.x = int(x)
+        self.y = int(y)
+        self.rect = pygame.Rect(self.x, self.y, 16, 16)
+        self.color = (250, 120, 60)
+        self.velX = 0
+        self.velY = 0
+        self.left_pressed = False
+        self.right_pressed = False
+        self.up_pressed = False
+        self.down_pressed = False
+        self.speed = 6
+
+    def drawPlayer(self, win):
+        pygame.draw.rect(win, self.color, self.rect)
+
+    def update(self):
+        self.velX = 0
+        self.velY = 0
+        if self.left_pressed and not self.right_pressed:
+            self.velX = -self.speed
+        if self.right_pressed and not self.left_pressed:
+            self.velX = self.speed
+        if self.up_pressed and not self.down_pressed:
+            self.velY = -self.speed
+        if self.down_pressed and not self.up_pressed:
+            self.velY = self.speed
+
+        self.x += self.velX
+        self.y += self.velY
+        
+        self.rect = pygame.Rect(self.x, self.y, 16, 16)
+
+#Player
+player = Player(game_width/2, game_height/2)
 
 #Button class
 class Button:
@@ -84,7 +121,8 @@ current_room = Rooms.Entrance #init room traversal
 while running:
 
     screen.blit(background, (0, 0)) #display background
-    clock.tick(60)
+    clock.tick(120)
+    # pygame.time.delay(30) #adds 30ms delay between frames, prevents game from running too fast
 
     map.draw(screen, offset_x, offset_y)
 
@@ -94,7 +132,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         
-        #Movement
+        #Room Traversal
         if event.type == pygame.MOUSEBUTTONDOWN: #means event triggers when the key is pressed
             mouse_pos = pygame.mouse.get_pos()
 
@@ -116,6 +154,33 @@ while running:
 
             if observe_btn.is_clicked(mouse_pos):
                 observe(current_room)
+
+        #Character Movement
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                player.left_pressed = True
+            if event.key == pygame.K_d:
+                player.right_pressed = True
+            if event.key == pygame.K_w:
+                player.up_pressed = True
+            if event.key == pygame.K_s:
+                player.down_pressed = True
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
+                player.left_pressed = False
+            if event.key == pygame.K_d:
+                player.right_pressed = False
+            if event.key == pygame.K_w:
+                player.up_pressed = False
+            if event.key == pygame.K_s:
+                player.down_pressed = False
+
+        player.drawPlayer(screen)
+        player.update()
+
+
+
         
         #UI Rendering
         #Bottom panel
