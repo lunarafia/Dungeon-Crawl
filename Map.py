@@ -1,4 +1,5 @@
 import pygame
+from Camera import camera
 
 class TileKind:
     def __init__(self, name, image, is_solid):
@@ -32,9 +33,14 @@ class Map:
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
                     
+                # location = (
+                #     x * self.tileSize + offset_x,
+                #     y * self.tileSize + offset_y
+                # )
+
                 location = (
-                    x * self.tileSize + offset_x,
-                    y * self.tileSize + offset_y
+                    (x * self.tileSize + offset_x) - camera.x,
+                    (y * self.tileSize + offset_y) - camera.y
                 )
 
                 image = self.tileKinds[tile].image

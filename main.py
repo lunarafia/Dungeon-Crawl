@@ -3,20 +3,25 @@ import random
 import Entity
 import Rooms
 from Map import TileKind, Map
+from Camera import createScreen, camera
 
 #dice roll
 def roll_d20():
     return random.randint(1, 20)
 
 pygame.init()
-screen = pygame.display.set_mode((1280, 720)) #set resolution
+# screen = pygame.display.set_mode((1280, 720)) #set resolution
+screen = createScreen(1280, 720, "Dungeon Crawl")
+
 background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill((19, 15, 46)) #background colour
 
 tileKinds = [
-    TileKind("floor", "Assets/Tiles/tile010.png", False),
-    TileKind("wall", "Assets/Tiles/tile016.png", True),
+    TileKind("floor", "Assets/Tiles/tile010.png", False), #0
+    TileKind("wall", "Assets/Tiles/tile016.png", True), #1
+    TileKind("boundary", "Assets/Tiles/floor_placeholder.png", True), #2
+    TileKind("door", "Assets/Tiles/wall_placeholder.png", False), #3
 ]
 
 # map = Map("Assets/Maps/Entrance.map", tileKinds, 16)
@@ -45,7 +50,7 @@ class Player:
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = False
-        self.speed = 6
+        self.speed = 3
 
     def drawPlayer(self, win):
         pygame.draw.rect(win, self.color, self.rect)
@@ -66,6 +71,9 @@ class Player:
         self.y += self.velY
         
         self.rect = pygame.Rect(self.x, self.y, 16, 16)
+        
+        camera.x = self.x - camera.width/2
+        camera.y = self.y - camera.height/2
 
 #Player
 player = Player(game_width/2, game_height/2)
@@ -121,7 +129,12 @@ current_room = Rooms.Entrance #init room traversal
 while running:
 
     screen.blit(background, (0, 0)) #display background
-    clock.tick(120)
+    dt_ms = clock.tick(60)
+
+    #Ensure consistent player speed   ...does it work? no
+    dt = dt_ms / 1000.0
+    player.x += player.speed * dt
+
     # pygame.time.delay(30) #adds 30ms delay between frames, prevents game from running too fast
 
     map.draw(screen, offset_x, offset_y)
